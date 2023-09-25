@@ -10,3 +10,5 @@ COPY conf/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 COPY ./tools/wordpress.sh /scripts/wordpress.sh
 
 RUN chmod +x /scripts/wordpress.sh
+
+CMD ["/scripts/wordpress.sh"]

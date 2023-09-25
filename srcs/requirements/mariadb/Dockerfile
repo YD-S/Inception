@@ -10,4 +10,6 @@ RUN chmod +x /mysql.sh
 
 EXPOSE 3306
 
-CMD ["/mysql.sh"]
+RUN /mysql.sh
+
+CMD ["mysqld"]
