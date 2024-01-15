@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if [ ! -f /var/www/html/wp-comfig.php ]; then
+if [ ! -f /var/www/html/wp-config.php ]; then
+	if ! [ -d /var/www/html ]; then
+		mkdir -p /var/www/html
+	fi
 
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
@@ -21,4 +24,4 @@ wp user create $DB_USER $DB_USER_EMAIL --user_pass=$DB_PASSWORD --allow-root --r
 fi
 
 chown -R wp_user:wp_group /var/www/html && chmod -R 775 /var/www/html
-php-fpm7.3 -y /etc/php/7.3/fpm/php-fpm.conf -F
+php-fpm7.4 -y /etc/php/7.4/fpm/php-fpm.conf -F

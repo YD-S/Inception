@@ -1,15 +1,18 @@
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt update && apt upgrade -y
 RUN apt install -y mariadb-server
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN mkdir -p /run/mysqld
+
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+
 COPY ./tools/mysql.sh /
 
 RUN chmod +x /mysql.sh
 
+RUN chown -R mysql:mysql /run/mysqld/
+
 EXPOSE 3306
 
-RUN /mysql.sh
-
-CMD ["mysqld"]
+CMD ["/mysql.sh"]

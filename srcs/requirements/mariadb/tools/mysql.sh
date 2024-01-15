@@ -1,12 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
-service mysql start 
+if [ ! -d "/var/lib/mysql/wordpress" ]
+then 
 
-echo "CREATE DATABASE IF NOT EXISTS mariadb ;" > msql_db.sql
-echo "CREATE USER IF NOT EXISTS 'ysingh'@'%' IDENTIFIED BY '1234' ;" >> msql_db.sql
-echo "GRANT ALL PRIVILEGES ON mariadb.* TO 'ysingh'@'%' ;" >> msql_db.sql
-echo "FLUSH PRIVILEGES;" >> msql_db.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345' ;" >> msql_db.sql
+service mariadb start
+mysql -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;"
+mysql -e "CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO \`${DB_USER}\`@'%'"
+mysql -e "FLUSH PRIVILEGES"
+mysql -u root --skip-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASS}';"
+mysqladmin -u root -p$DB_ROOT_PASS shutdown
+fi
 
-mysql < msql_db.sql
-
+exec mysqld -u root
