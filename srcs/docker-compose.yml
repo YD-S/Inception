@@ -30,7 +30,14 @@ services:
     restart: unless-stopped
 
   mariadb:
-    build: ./requirements/mariadb
+    build: 
+      args:
+        - MYSQL_DATABASE=${DB_NAME}
+        - MYSQL_USER=${DB_USER}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     image: mariadb
     container_name: db_inception
     volumes:
